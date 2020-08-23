@@ -1,0 +1,19 @@
+package com.lit.krecyclerview.loadView.base
+
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.LinearLayout
+
+abstract class IBaseWrapperView : LinearLayout {
+
+    companion object{
+        const val TAG : String = "IBaseWrapperView.java"
+    }
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
+}

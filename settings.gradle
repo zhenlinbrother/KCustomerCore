@@ -1,0 +1,3 @@
+rootProject.name='KCustomerCore'
+include ':app'
+include ':krecyclerview'
