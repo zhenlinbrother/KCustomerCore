@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.lit.krecyclerview.utils.LogUtils
+import java.util.jar.Attributes
 import kotlin.properties.Delegates
 
 abstract class IBaseWrapperView : LinearLayout {
@@ -123,10 +124,24 @@ abstract class IBaseWrapperView : LinearLayout {
         mCurState = state
     }
 
+
+    protected fun reset(destHeight: Int){
+        smoothScrollTo(destHeight)
+        postDelayed(Runnable { setState(destHeight) }, 200)
+    }
+
+    /**
+     * 平滑滚动至某个高度
+     */
     open fun smoothScrollTo(destHeight : Int){
         smoothScrollTo(destHeight, SCROLL_DURATION)
     }
 
+    /**
+     * 平滑滚动至某个高度
+     * @param destHeight 目标高度
+     * @param durTime 时长
+     */
     open fun smoothScrollTo(destHeight: Int, durTime : Int){
         //设置从可见高度 -> 目标高度
         var valueAnimator : ValueAnimator = ValueAnimator.ofInt(getVisibleHeight(), destHeight)
