@@ -24,7 +24,7 @@ abstract class IBaseRefreshLoadView constructor(
     /**
      * 下拉刷新监听
      */
-    private var mOnRefreshListener : KRefreshAndLoadMoreAdapter.OnRefreshListener ?
+    var mOnRefreshListener : KRefreshAndLoadMoreAdapter.OnRefreshListener ?
         get() = mOnRefreshListener
         set(listener) {
             mOnRefreshListener = listener
@@ -77,11 +77,6 @@ abstract class IBaseRefreshLoadView constructor(
                 setState(STATE_RELEASE_TO_ACTION)
             }
 
-            val height : Int = if (visibleHeight >= mHeight){
-                mHeight
-            } else {
-                visibleHeight
-            }
         }
     }
 

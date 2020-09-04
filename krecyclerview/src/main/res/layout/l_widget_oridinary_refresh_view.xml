@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/j_recycle_icon_refresh_arrow"
+            android:visibility="visible"
+            android:layout_marginRight="15dp" />
+
+        <com.lit.krecyclerview.widget.BallSpinFadeLoader
+            android:id="@+id/ball_loader"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="15dp"
+            android:visibility="gone"
+            android:layout_marginRight="15dp" />
+
+        <TextView
+            android:id="@+id/tv_refresh_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_recycler_pull_to_refresh"
+            android:textColor="@color/l_recycler_text_color"
+            android:textSize="@dimen/l_recycler_refresh_tip_text_size" />
+
+    </LinearLayout>
+
+</LinearLayout>

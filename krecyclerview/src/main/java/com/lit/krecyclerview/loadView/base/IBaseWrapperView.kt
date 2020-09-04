@@ -50,7 +50,7 @@ abstract class IBaseWrapperView : LinearLayout {
         }
     }
 
-    fun init(context: Context){
+    private fun init(context: Context){
         mCurState = STATE_PULL_TO_ACTION
 
         var params : LinearLayout.LayoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)

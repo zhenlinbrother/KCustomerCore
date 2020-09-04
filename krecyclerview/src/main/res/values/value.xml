@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="l_recycler_balling_color">#bfbfbf</color>
+    <color name="l_recycler_text_color">#bfbfbf</color>
+    <dimen name="l_recycler_load_more_tip_text_size">12sp</dimen>
+    <dimen name="l_recycler_refresh_tip_text_size">12sp</dimen>
+    <string name="l_recycler_loaded">上拉加载</string>
+    <string name="l_recycler_loading">正在加载中…</string>
+    <string name="l_recycler_no_more">----没有更多了----</string>
+    <string name="l_recycler_pull_to_load">上拉加载</string>
+    <string name="l_recycler_pull_to_refresh">下拉刷新</string>
+    <string name="l_recycler_refreshed">刷新完成</string>
+    <string name="l_recycler_refreshing">正在刷新…</string>
+    <string name="l_recycler_release_to_load">释放立即加载</string>
+    <string name="l_recycler_release_to_refresh">释放立即刷新</string>
+    <string name="l_recycler_reload">上拉重新加载</string>
+</resources>
