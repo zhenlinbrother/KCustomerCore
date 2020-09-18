@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bitProgressBarSecondaryColor">#990081cc</color>
+    <color name="bitProgressBarColor">#0081cc</color>
+
+</resources>

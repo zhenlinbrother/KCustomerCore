@@ -127,7 +127,7 @@ abstract class IBaseWrapperView : LinearLayout {
 
     protected fun reset(destHeight: Int){
         smoothScrollTo(destHeight)
-        postDelayed(Runnable { setState(destHeight) }, 200)
+        postDelayed(Runnable { setState(2) }, 200)
     }
 
     /**

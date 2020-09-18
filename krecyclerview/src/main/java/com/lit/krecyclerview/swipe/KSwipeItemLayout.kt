@@ -210,7 +210,7 @@ class KSwipeItemLayout @JvmOverloads constructor(
      * 关闭菜单
      * 1、如果mCurrentMenu不为空 则滑动到原点 并判断是否有监听器，有则执行onSwipeClose方法
      */
-    private fun close(){
+    fun close(){
         if (mCurrentMenu == null){
             isOpen = false
         } else {

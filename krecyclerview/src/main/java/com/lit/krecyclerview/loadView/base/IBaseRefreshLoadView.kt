@@ -24,11 +24,7 @@ abstract class IBaseRefreshLoadView constructor(
     /**
      * 下拉刷新监听
      */
-    var mOnRefreshListener : KRefreshAndLoadMoreAdapter.OnRefreshListener ?
-        get() = mOnRefreshListener
-        set(listener) {
-            mOnRefreshListener = listener
-        }
+    var mOnRefreshListener : KRefreshAndLoadMoreAdapter.OnRefreshListener ?= null
 
     override fun wrapper(context: Context?, view: View) {
         addView(view)
@@ -67,6 +63,10 @@ abstract class IBaseRefreshLoadView constructor(
     fun onMove(visibleHeight: Int, delta : Int){
         LogUtils.i(TAG, "[visibleHeight: $visibleHeight; delta: $delta")
 
+        if (visibleHeight > 0 || delta > 0){
+            this.setVisibleHeight(visibleHeight + delta)
+        }
+
         //需要符合：1、可见高度大于0，即用户已有向下拉动；2、拉动距离要大于0
         if (mCurState <= STATE_RELEASE_TO_ACTION){
 
@@ -86,6 +86,6 @@ abstract class IBaseRefreshLoadView constructor(
     }
 
     override fun onOther(state: Int) {
-        TODO("Not yet implemented")
+
     }
 }

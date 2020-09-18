@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lit.krecyclerview.BaseViewHolder
 import com.lit.krecyclerview.OrdinaryLoadMoreView
 import com.lit.krecyclerview.config.KRecyclerConfig
 import com.lit.krecyclerview.config.KRecyclerManager
@@ -18,9 +19,9 @@ import com.lit.krecyclerview.loadView.base.IBaseRefreshLoadView
  * desc         : 刷新和下拉更多包装类
  * version      : 1.1.0
  */
-class KRefreshAndLoadMoreAdapter(
+open class KRefreshAndLoadMoreAdapter(
     context: Context?,
-    var realAdapter: RecyclerView.Adapter<*>
+    var realAdapter: RecyclerView.Adapter<BaseViewHolder>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mIsOpenRefresh = true
@@ -64,20 +65,20 @@ class KRefreshAndLoadMoreAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == KRecyclerConfig.HEAD){
+        return if (viewType == KRecyclerConfig.HEAD){
             if (this.mOnRefreshListener != null){
-                this.mRefreshLoadView?.mOnRefreshListener = this.mOnRefreshListener
+                this.mRefreshLoadView!!.mOnRefreshListener = mOnRefreshListener
             }
 
-            return KRefreshAndLoadMoreAdapter.KRefreshViewHolder(this.mRefreshLoadView!!)
+            KRefreshViewHolder(this.mRefreshLoadView!!)
         } else if (viewType == KRecyclerConfig.FOOT){
             if (this.mOnLoadMoreListener != null){
-                this.mLoadMoreView?.onLoadMoreListener = this.mOnLoadMoreListener
+                this.mLoadMoreView!!.mOnLoadMoreListener = mOnLoadMoreListener
             }
 
-            return KLoadMoreViewHolder(this.mLoadMoreView!!)
+            KLoadMoreViewHolder(this.mLoadMoreView!!)
         } else{
-            return this.realAdapter.onCreateViewHolder(parent, viewType)
+            this.realAdapter.onCreateViewHolder(parent, viewType)
         }
     }
 
@@ -96,7 +97,9 @@ class KRefreshAndLoadMoreAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder !is KRefreshViewHolder && holder !is KLoadMoreViewHolder){
-            realAdapter.run { onBindViewHolder(holder, RealPosition(position)) }
+            //realAdapter.run { onBindViewHolder(holder, RealPosition(position)) }
+            realAdapter.onBindViewHolder(holder as BaseViewHolder, RealPosition(position))
+
         }
     }
 
