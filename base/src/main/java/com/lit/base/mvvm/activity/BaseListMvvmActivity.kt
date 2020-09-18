@@ -2,6 +2,7 @@ package com.lit.base.mvvm.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -93,4 +94,29 @@ abstract class BaseListMvvmActivity<V : ViewDataBinding?, VM : IMvvmBaseViewMode
      * 子View 可以加强 adapter 的功能
      */
     fun initAdapterForChild(adapter: RecyclerView.Adapter<BaseViewHolder>){}
+
+    override fun showContent() {
+        baseAdapter!!.onSuccess()
+    }
+
+    override fun showLoading() {
+        baseAdapter!!.onLoading()
+    }
+
+    override fun showEmpty() {
+        baseAdapter!!.onEmpty()
+    }
+
+    override fun showFailure(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        baseAdapter!!.onError()
+    }
+
+    override fun onRetry() {
+        getFirstData()
+    }
+
+    override fun onEmpty() {
+        getFirstData()
+    }
 }
