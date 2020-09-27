@@ -72,4 +72,6 @@ dependencies {
     implementation 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     implementation 'com.github.zhpanvip:BannerViewPager:2.6.6'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7'
 }

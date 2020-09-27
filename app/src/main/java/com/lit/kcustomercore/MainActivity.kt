@@ -3,19 +3,24 @@ package com.lit.kcustomercore
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.lit.base.mvvm.activity.BaseListActivity
 import com.lit.krecyclerview.BaseViewHolder
 import com.lit.krecyclerview.adapter.KRefreshAndLoadMoreAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseListActivity() {
     private val mData: MutableList<String> = ArrayList<String>()
     private val adapter : StringAdapter
 
-
+    private val data: MutableList<String> = ArrayList<String>()
     init {
-        adapter = StringAdapter(mData)
+        adapter = StringAdapter(data)
         initData()
+        data.addAll(mData)
     }
 
     private fun initData() {
@@ -24,36 +29,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun getFirstData() {
 
-        val mAdapter = KRefreshAndLoadMoreAdapter(this, adapter)
-
-        mAdapter.mIsOpenLoadMore = true
-        mAdapter.mIsOpenRefresh = true
-        mAdapter.mOnRefreshListener = object : KRefreshAndLoadMoreAdapter.OnRefreshListener{
-            override fun onRefreshing() {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
                 mData.clear()
                 initData()
-                mAdapter.notifyDataSetChanged()
-                mAdapter.setRefreshComplete()
+                delay(3000)
             }
 
+            withContext(Dispatchers.Main){
+                data.clear()
+                data.addAll(mData)
+                baseAdapter.onSuccess()
+            }
         }
 
+    }
 
-        mAdapter.mOnLoadMoreListener = object : KRefreshAndLoadMoreAdapter.OnLoadMoreListener{
-            override fun onLoading() {
+    override fun loadMoreData() {
+
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
                 initData()
-                mAdapter.notifyDataSetChanged()
-                mAdapter.setLoadComplete()
+                delay(3000)
             }
 
+            addData()
         }
 
-        k_recycler_view.layoutManager = LinearLayoutManager(this)
-        k_recycler_view.adapter = mAdapter
+    }
 
+    override fun getAdapter(): RecyclerView.Adapter<BaseViewHolder> {
+        return adapter
+    }
+
+    private suspend fun addData(){
+        withContext(Dispatchers.Main){
+            data.addAll(mData)
+            baseAdapter.setLoadComplete()
+        }
     }
 }

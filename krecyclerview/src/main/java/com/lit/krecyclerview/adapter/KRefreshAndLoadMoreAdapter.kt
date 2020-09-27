@@ -162,7 +162,7 @@ open class KRefreshAndLoadMoreAdapter(
         fun onLoading()
     }
 
-    class KLoadMoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    class KRefreshViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class KLoadMoreViewHolder(itemView: View) : BaseViewHolder(itemView)
+    class KRefreshViewHolder(itemView: View) : BaseViewHolder(itemView)
 
 }

@@ -21,7 +21,7 @@ class BitManager {
         val instance = BitManager()
     }
 
-    private var isDebug = false
+    var isDebug = false
 
     var loadingViewLayout = R.layout.bit_state_loading_view
     var retryViewLayout = R.layout.bit_state_retry_view

@@ -223,13 +223,15 @@ class BitFrameAdapter(context: Context,
             layoutParams.isFullSpan = true
         }
 
-        if (holder !is LoadingViewHolder){
+        if (realAdapter != null && holder !is LoadingViewHolder){
             realAdapter.onViewAttachedToWindow(holder as BaseViewHolder)
         }
     }
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        realAdapter?.onViewDetachedFromWindow(holder as BaseViewHolder)
+        if (holder !is LoadingViewHolder){
+            realAdapter?.onViewDetachedFromWindow(holder as BaseViewHolder)
+        }
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
@@ -237,3 +239,4 @@ class BitFrameAdapter(context: Context,
         realAdapter.onDetachedFromRecyclerView(recyclerView)
     }
 }
+

@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <com.lit.krecyclerview.KRecyclerView
-        android:id="@+id/k_recycler_view"
+        android:id="@+id/base_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
