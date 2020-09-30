@@ -7,9 +7,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.lit.krecyclerview.KRecyclerView
-        android:id="@+id/base_recycler_view"
+    <com.lit.base.base.widget.NoScrollViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
+    <com.next.easynavigation.view.EasyNavigationBar
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"/>
 </LinearLayout>

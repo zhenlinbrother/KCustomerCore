@@ -21,6 +21,11 @@ class MainPageRepository private constructor(private val eyepetizerNetwork: Eyep
         response
     }
 
+    suspend fun refreshHomePageRecommend(url: String) = withContext(Dispatchers.IO){
+        val response = eyepetizerNetwork.fetchHomePageRecommend(url)
+        response
+    }
+
     companion object {
 
         private var repository: MainPageRepository? = null

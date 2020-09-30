@@ -22,6 +22,8 @@ class EyepetizerNetwork{
 
     suspend fun fetchDiscovery(url: String) = apiService.getDiscovery(url).await()
 
+    suspend fun fetchHomePageRecommend(url: String) = apiService.getHomePageRecommend(url).await()
+
     private suspend fun <T> Call<T>.await(): T{
         return suspendCoroutine {
             enqueue(object : Callback<T> {

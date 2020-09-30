@@ -37,26 +37,25 @@ class DiscoveryFragment : BaseListFragment<Discovery.Item>(){
         observe()
     }
 
-    override fun requestRefresh(): Boolean = false
 
     private fun observe(){
         viewModel.dataListLiveData.observe(viewLifecycleOwner, Observer {
             val response = it.getOrNull()
-            if (response == null){
-                if (!viewModel.isFirst && viewModel.nextPageUrl.isNullOrEmpty()){
-                    baseAdapter.setNoMore()
-                    return@Observer
-                }
-                ResponseHandler.getFailureTips(it.exceptionOrNull()).let { it ->
-                    it.showToast()
-                    if (viewModel.isFirst) baseAdapter.onError() else baseAdapter.setLoadError()
-                }
-                return@Observer
+//            if (response == null){
+//                if (!viewModel.isFirst && viewModel.nextPageUrl.isNullOrEmpty()){
+//                    baseAdapter.setNoMore()
+//                    return@Observer
+//                }
+//                ResponseHandler.getFailureTips(it.exceptionOrNull()).let { it ->
+//                    it.showToast()
+//                    if (viewModel.isFirst) baseAdapter.onError() else baseAdapter.setLoadError()
+//                }
+//                return@Observer
+//
+//            }
 
-            }
-
-            viewModel.nextPageUrl = response.nextPageUrl
-            onHandleResponseData(response.itemList, viewModel.isFirst)
+            viewModel.nextPageUrl = response?.nextPageUrl
+            onHandleResponseData(response?.itemList, viewModel.isFirst)
         })
     }
 

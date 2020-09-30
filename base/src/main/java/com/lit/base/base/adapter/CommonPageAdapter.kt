@@ -1,7 +1,6 @@
 package com.lit.base.base.adapter
 
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -14,7 +13,8 @@ import androidx.fragment.app.FragmentPagerAdapter
  */
 class CommonPageAdapter(
     @NonNull fm: FragmentManager?,
-    private val fragments: List<Fragment>
+    private val fragments: List<Fragment>,
+    private val tabTitles: Array<String>
 ) : FragmentPagerAdapter(fm!!, BEHAVIOR_SET_USER_VISIBLE_HINT) {
 
 
@@ -27,4 +27,7 @@ class CommonPageAdapter(
         return fragments.size
     }
 
+    override fun getPageTitle(position: Int): CharSequence? {
+        return tabTitles[position]
+    }
 }

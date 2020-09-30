@@ -4,9 +4,10 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lit.kcustomercore.LincApplication
+
 import com.lit.kcustomercore.R
 import com.lit.kcustomercore.bean.Discovery
 import com.lit.kcustomercore.extension.*
@@ -93,17 +94,18 @@ class DiscoveryAdapter(val fragment: DiscoveryFragment, val dataList: List<Disco
 
             is HorizontalScrollCardViewHolder -> {
                 holder.bannerViewPager.run {
-                    setCanLoop(false)
+                    setCanLoop(true)
                     setRoundCorner(dp2px(4f))
-                    setRevealWidth(LincApplication.context.resources.getDimensionPixelOffset(R.dimen.listSpaceSize))
-                    if (item.data.itemList.size == 1) setPageMargin(0) else setPageMargin(dp2px(4f))
+                    //setRevealWidth(LincApplication.context.resources.getDimensionPixelOffset(R.dimen.listSpaceSize))
+                    //if (item.data.itemList.size == 1) setPageMargin(0) else setPageMargin(dp2px(4f))
                     setIndicatorVisibility(View.GONE)
                     setAdapter(HorizontalScrollCardAdapter())
-                    removeDefaultPageTransformer()
+                    //removeDefaultPageTransformer()
                     setPageStyle(PageStyle.MULTI_PAGE_OVERLAP)
 
                     create(item.data.itemList)
                 }
+
             }
 
             is SpecialSquareCardCollectionViewHolder -> {
@@ -111,7 +113,6 @@ class DiscoveryAdapter(val fragment: DiscoveryFragment, val dataList: List<Disco
                     tvTitle.text = item.data.header.title
                     tvRightText.text = item.data.header.rightText
 
-                    recyclerView.setHasFixedSize(true)
                     recyclerView.layoutManager = GridLayoutManager(fragment.activity, 2).apply {
                         orientation = GridLayoutManager.HORIZONTAL
                     }
@@ -128,7 +129,6 @@ class DiscoveryAdapter(val fragment: DiscoveryFragment, val dataList: List<Disco
                     tvTitle.text = item.data.header.title
                     tvRightText.text = item.data.header.rightText
                     setOnClickListener(tvRightText, ivInto) { item.data.header.rightText.toShowToast() }
-                    recyclerView.setHasFixedSize(true)
                     recyclerView.layoutManager = GridLayoutManager(fragment.activity, 2)
                     if (recyclerView.itemDecorationCount == 0){
                         recyclerView.addItemDecoration(GridListItemDecoration(2))
@@ -321,5 +321,6 @@ class DiscoveryAdapter(val fragment: DiscoveryFragment, val dataList: List<Disco
             }
         }
     }
+
 
 }

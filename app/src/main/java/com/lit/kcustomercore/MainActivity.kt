@@ -1,14 +1,19 @@
 package com.lit.kcustomercore
 
 import android.os.Bundle
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lit.base.base.adapter.CommonPageAdapter
 import com.lit.base.mvvm.activity.BaseActivity
 import com.lit.base.mvvm.activity.BaseListActivity
 import com.lit.base.mvvm.fragment.BaseFragment
+import com.lit.kcustomercore.ui.home.HomePageFragment
 import com.lit.kcustomercore.ui.home.discovery.DiscoveryFragment
 import com.lit.krecyclerview.BaseViewHolder
 import com.lit.krecyclerview.adapter.KRefreshAndLoadMoreAdapter
@@ -20,8 +25,8 @@ import kotlin.collections.ArrayList
 
 class MainActivity : BaseActivity() {
 
-    private var fragmentList = listOf<BaseFragment>(DiscoveryFragment.newInstance(), TestFragment.newInstance())
-    private lateinit var adapter: CommonPageAdapter
+    private var fragmentList = listOf<BaseFragment>(HomePageFragment.newInstance())
+    private lateinit var adapter: PageAdapter
 
     override fun getLayoutId(): Int {
         return R.layout.activity_main
@@ -41,7 +46,7 @@ class MainActivity : BaseActivity() {
             .centerIconSize(36f)
             .build()
 
-        adapter = CommonPageAdapter(supportFragmentManager, fragmentList)
+        adapter = PageAdapter(supportFragmentManager, fragmentList)
         viewPager.offscreenPageLimit = 1
         viewPager.adapter = adapter
 
@@ -59,5 +64,18 @@ class MainActivity : BaseActivity() {
             R.drawable.ic_social_unselected,
             R.drawable.ic_notification_unselected,
             R.drawable.ic_mine_unselected)
+    }
+
+    inner class PageAdapter(@NonNull fm: FragmentManager?,
+                            private val fragments: List<Fragment>
+    ) : FragmentPagerAdapter(fm!!, BEHAVIOR_SET_USER_VISIBLE_HINT){
+        @NonNull
+        override fun getItem(position: Int): Fragment {
+            return fragments[position]
+        }
+
+        override fun getCount(): Int {
+            return fragments.size
+        }
     }
 }

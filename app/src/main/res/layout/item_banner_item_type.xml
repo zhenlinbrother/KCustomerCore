@@ -9,8 +9,7 @@
         android:id="@+id/ivPicture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        tools:src="@drawable/ic_launcher_background" />
+        android:scaleType="fitXY" />
 
     <com.lit.kcustomercore.view.TypefaceTextView
         android:id="@+id/tvLabel"

@@ -6,7 +6,7 @@
     android:layout_height="207dp"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.home.discovery.DiscoveryFragment">
+    android:layout_marginTop="10dp">
 
     <com.zhpan.bannerview.BannerViewPager
         android:id="@+id/bannerViewPager"
