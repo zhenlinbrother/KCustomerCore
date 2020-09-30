@@ -169,15 +169,15 @@ class BitFrameAdapter(context: Context,
     /**
      * 重试视图
      */
-    class RetryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class RetryViewHolder(itemView: View) : BaseViewHolder(itemView)
     /**
      * 加载视图
      */
-    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class LoadingViewHolder(itemView: View) : BaseViewHolder(itemView)
     /**
      * 空视图
      */
-    class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class EmptyViewHolder(itemView: View) : BaseViewHolder(itemView)
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -229,9 +229,9 @@ class BitFrameAdapter(context: Context,
     }
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        if (holder !is LoadingViewHolder){
+
             realAdapter?.onViewDetachedFromWindow(holder as BaseViewHolder)
-        }
+
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {

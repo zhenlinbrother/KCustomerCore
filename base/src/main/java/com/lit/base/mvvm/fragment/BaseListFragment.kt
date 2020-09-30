@@ -19,10 +19,12 @@ import kotlinx.android.synthetic.main.base_recycler_view.view.*
  * desc         : 带有上拉刷新和下拉刷新 基类 fragment
  * version      : 1.0.0
  */
-abstract class BaseListFragment : BaseLazyFragment(), IStateListener{
+abstract class BaseListFragment<T> : BaseLazyFragment(), IStateListener{
 
     protected lateinit var kRecyclerView: KRecyclerView
     protected lateinit var baseAdapter: BitFrameAdapter
+
+    protected var mData: MutableList<T> = ArrayList<T>()
 
     protected var emptyView: Int? = null
         get() = BitManager.instance.emptyViewLayout
@@ -35,12 +37,14 @@ abstract class BaseListFragment : BaseLazyFragment(), IStateListener{
     protected var emptyBtnId: Int? = null
         get() = BitManager.instance.emptyBtnId
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        kRecyclerView = view.findViewById(R.id.base_recycle_view)
+    override fun onFragmentFirstVisible(){
+        super.onFragmentFirstVisible()
+        kRecyclerView = view!!.findViewById(R.id.base_recycle_view)
         initRecyclerView(kRecyclerView)
         setAdapter(getAdapter())
+        initView(view!!)
+        baseAdapter.onLoading()
+        getFirstData()
     }
 
     override fun getLayoutId(): Int {
@@ -94,13 +98,13 @@ abstract class BaseListFragment : BaseLazyFragment(), IStateListener{
      * 是否需要下拉刷新
      * @return Boolean
      */
-    protected fun requestRefresh() = true
+    protected open fun requestRefresh() = true
 
     /**
      * 是否需要加载更多
      * @return Boolean
      */
-    protected fun requestLoadMore() = true
+    protected open fun requestLoadMore() = true
 
     abstract fun getAdapter(): RecyclerView.Adapter<BaseViewHolder>
 
@@ -119,4 +123,24 @@ abstract class BaseListFragment : BaseLazyFragment(), IStateListener{
     override fun onEmpty() {
         getFirstData()
     }
+
+    fun onHandleResponseData(data: List<T>?, isFirst: Boolean){
+        if (isFirst){
+            mData.clear()
+            baseAdapter.onSuccess()
+        }
+
+        if (data == null){
+            baseAdapter.setNoMore()
+        } else {
+            baseAdapter.setLoadComplete()
+        }
+
+        if (data != null){
+            mData.addAll(data)
+        }
+
+        baseAdapter.notifyDataSetChanged()
+    }
+
 }

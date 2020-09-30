@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/common_white">
+
+    <ImageView
+        android:id="@+id/ivNetCandle"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/home_candle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"
+        android:visibility="invisible"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ivNetSearch"
+        app:layout_constraintStart_toEndOf="@id/ivNetCandle"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@android:color/darker_gray"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabIndicatorFullWidth="false"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="@android:color/darker_gray"/>
+
+    <ImageView
+        android:id="@+id/ivNetSearch"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/home_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="10dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

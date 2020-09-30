@@ -14,4 +14,5 @@
     <string name="l_recycler_release_to_load">释放立即加载</string>
     <string name="l_recycler_release_to_refresh">释放立即刷新</string>
     <string name="l_recycler_reload">上拉重新加载</string>
+    <color name="common_white">#fafafa</color>
 </resources>

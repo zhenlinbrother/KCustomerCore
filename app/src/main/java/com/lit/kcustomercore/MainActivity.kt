@@ -2,72 +2,62 @@ package com.lit.kcustomercore
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lit.base.base.adapter.CommonPageAdapter
+import com.lit.base.mvvm.activity.BaseActivity
 import com.lit.base.mvvm.activity.BaseListActivity
+import com.lit.base.mvvm.fragment.BaseFragment
+import com.lit.kcustomercore.ui.home.discovery.DiscoveryFragment
 import com.lit.krecyclerview.BaseViewHolder
 import com.lit.krecyclerview.adapter.KRefreshAndLoadMoreAdapter
+import com.next.easynavigation.view.EasyNavigationBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : BaseListActivity() {
-    private val mData: MutableList<String> = ArrayList<String>()
-    private val adapter : StringAdapter
+class MainActivity : BaseActivity() {
 
-    private val data: MutableList<String> = ArrayList<String>()
-    init {
-        adapter = StringAdapter(data)
-        initData()
-        data.addAll(mData)
+    private var fragmentList = listOf<BaseFragment>(DiscoveryFragment.newInstance(), TestFragment.newInstance())
+    private lateinit var adapter: CommonPageAdapter
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
     }
 
-    private fun initData() {
-        for (i in 0 until 10){
-            mData.add("12345")
-        }
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        bottomView.defaultSetting()
+            .fragmentList(fragmentList)
+            .titleItems(tabText)
+            .selectIconItems(selectedIcons)
+            .normalIconItems(unselectedIcons)
+            .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
+            .selectTextColor(ContextCompat.getColor(this, R.color.selected_color))
+            .navigationBackground(ContextCompat.getColor(this, R.color.common_white))
+            .centerImageRes(R.drawable.ic_wu)
+            .centerIconSize(36f)
+            .build()
 
-    override fun getFirstData() {
+        adapter = CommonPageAdapter(supportFragmentManager, fragmentList)
+        viewPager.offscreenPageLimit = 1
+        viewPager.adapter = adapter
 
-        GlobalScope.launch {
-            withContext(Dispatchers.IO){
-                mData.clear()
-                initData()
-                delay(3000)
-            }
-
-            withContext(Dispatchers.Main){
-                data.clear()
-                data.addAll(mData)
-                baseAdapter.onSuccess()
-            }
-        }
+        bottomView.setupWithViewPager(viewPager)
 
     }
 
-    override fun loadMoreData() {
-
-        GlobalScope.launch {
-            withContext(Dispatchers.IO){
-                initData()
-                delay(3000)
-            }
-
-            addData()
-        }
-
-    }
-
-    override fun getAdapter(): RecyclerView.Adapter<BaseViewHolder> {
-        return adapter
-    }
-
-    private suspend fun addData(){
-        withContext(Dispatchers.Main){
-            data.addAll(mData)
-            baseAdapter.setLoadComplete()
-        }
+    companion object{
+        val tabText = arrayOf("首页", "社区", "通知", "我的")
+        val selectedIcons = intArrayOf(R.drawable.ic_home_selected,
+            R.drawable.ic_social_selected,
+            R.drawable.ic_notification_selected,
+            R.drawable.ic_mine_selected)
+        val unselectedIcons = intArrayOf(R.drawable.ic_home_unselected,
+            R.drawable.ic_social_unselected,
+            R.drawable.ic_notification_unselected,
+            R.drawable.ic_mine_unselected)
     }
 }

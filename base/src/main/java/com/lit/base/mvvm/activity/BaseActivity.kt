@@ -2,12 +2,15 @@ package com.lit.base.mvvm.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.gyf.immersionbar.ImmersionBar
+import com.lit.base.R
 import com.lit.base.mvvm.utils.ActivityCollector
 import java.lang.ref.WeakReference
 
@@ -44,6 +47,7 @@ abstract class BaseActivity : AppCompatActivity(){
         activity = this
         activityWR = WeakReference(activity!!)
         ActivityCollector.pushTask(activityWR)
+        setStatusBarBackground(R.color.common_white)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

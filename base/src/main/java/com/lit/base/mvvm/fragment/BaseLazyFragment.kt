@@ -133,21 +133,21 @@ abstract class BaseLazyFragment : BaseFragment() {
     /**
      * 第一次可见，根据业务进行初始化操作
      */
-    protected fun onFragmentFirstVisible(){
+    protected open fun onFragmentFirstVisible(){
         Log.d(TAG, "onFragmentFirstVisible: 第一次可见")
     }
 
     /**
      * Fragment真正的Resume，开始处理网络加载等耗时操作
      */
-    protected fun onFragmentResume(){
+    protected open fun onFragmentResume(){
         Log.d(TAG, "onFragmentResume: 真正的Resume 开始进行相关耗时操作")
     }
 
     /**
      * Fragment真正的Pause，暂停一切网络耗时操作
      */
-    protected fun onFragmentPause(){
+    protected open fun onFragmentPause(){
         Log.d(TAG, "onFragmentPause: 真正的Pause 结束相关耗时操作")
     }
 

@@ -1,9 +1,11 @@
 package com.lit.kcustomercore.net
 
+import android.os.Build
 import android.util.Log
 import androidx.annotation.NonNull
 import com.google.gson.GsonBuilder
-import com.zhpan.idea.net.interceptor.LoggingInterceptor
+import com.lit.kcustomercore.extension.screenPixel
+import com.lit.kcustomercore.utils.GlobalUtil
 import okhttp3.*
 import okio.Buffer
 import retrofit2.Retrofit
@@ -26,6 +28,7 @@ object ServiceCreator {
     val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(HeaderInterceptor())
         .addInterceptor(LogInterceptor())
+        .addInterceptor(BasicParamsInterceptor())
         .build()
 
     private val builder = Retrofit.Builder()
@@ -224,6 +227,27 @@ object ServiceCreator {
             private const val HORIZONTAL_LINE = "─"
             private const val isShow = true
             private val UTF8: Charset = Charset.forName("UTF-8")
+        }
+    }
+
+    class BasicParamsInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val originalRequest = chain.request()
+            val originalHttpUrl = originalRequest.url
+            val url = originalHttpUrl.newBuilder().apply {
+                addQueryParameter("udid", GlobalUtil.getDeviceSerial())
+                addQueryParameter("vc", GlobalUtil.eyepetizerVersionCode.toString())
+                addQueryParameter("vn", GlobalUtil.eyepetizerVersionName)
+                addQueryParameter("size", screenPixel())
+                addQueryParameter("deviceModel", GlobalUtil.deviceModel)
+                addQueryParameter("first_channel", GlobalUtil.deviceBrand)
+                addQueryParameter("last_channel", GlobalUtil.deviceBrand)
+                addQueryParameter("system_version_code", "${Build.VERSION.SDK_INT}")
+            }.build()
+            val request = originalRequest.newBuilder().url(url).method(originalRequest.method,
+                originalRequest.body
+            ).build()
+            return chain.proceed(request)
         }
     }
 }

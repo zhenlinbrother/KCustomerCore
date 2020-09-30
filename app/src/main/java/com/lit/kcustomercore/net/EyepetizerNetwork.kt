@@ -20,6 +20,8 @@ class EyepetizerNetwork{
 
     private val apiService = ServiceCreator.create(ApiService::class.java)
 
+    suspend fun fetchDiscovery(url: String) = apiService.getDiscovery(url).await()
+
     private suspend fun <T> Call<T>.await(): T{
         return suspendCoroutine {
             enqueue(object : Callback<T> {
@@ -32,8 +34,23 @@ class EyepetizerNetwork{
                     if (body != null) it.resume(body)
                     else it.resumeWithException(RuntimeException("response body is null"))
                 }
-
             })
+        }
+    }
+
+    companion object {
+        private var network: EyepetizerNetwork? = null
+
+        fun getInstance(): EyepetizerNetwork{
+            if (network == null){
+                synchronized(EyepetizerNetwork::class.java){
+                    if (network == null){
+                        network = EyepetizerNetwork()
+                    }
+                }
+            }
+
+            return network!!
         }
     }
 }

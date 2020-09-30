@@ -84,8 +84,8 @@ abstract class IBaseLoadMoreView : IBaseWrapperView{
 
     override fun onOther(state: Int) {
         when(state){
-            1 -> onNoMore()
-            32 -> onError()
+            1 -> onError()
+            32 -> onNoMore()
         }
     }
 
