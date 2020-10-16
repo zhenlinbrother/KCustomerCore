@@ -16,3 +16,12 @@ fun CharSequence.showToast(duration: Int = Toast.LENGTH_SHORT) {
 fun CharSequence?.toShowToast(duration: Int = Toast.LENGTH_SHORT){
     "$this,该功能即将开放，敬请期待".showToast(duration)
 }
+
+/**
+ * 弹出Toast提示。
+ *
+ * @param duration 显示消息的时间  Either {@link #LENGTH_SHORT} or {@link #LENGTH_LONG}
+ */
+fun Int.showToast(duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(LincApplication.context, this, duration).show()
+}

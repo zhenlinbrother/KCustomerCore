@@ -20,7 +20,7 @@ class CommendFragment : BaseListFragment<HomePageRecommend.Item>(){
     private val viewModel by lazy { ViewModelProvider(this, InjectorUtil.getHomePageCommendViewModelFactory()).get(CommendViewModel::class.java) }
 
     override fun getAdapter(): RecyclerView.Adapter<BaseViewHolder> {
-        TODO("Not yet implemented")
+        return CommendAdapter(this, mData)
     }
 
     override fun getFirstData() {
@@ -41,4 +41,7 @@ class CommendFragment : BaseListFragment<HomePageRecommend.Item>(){
         })
     }
 
+    companion object {
+        fun newInstance() = CommendFragment()
+    }
 }

@@ -12,6 +12,7 @@ import com.lit.kcustomercore.R
 import com.lit.kcustomercore.bean.Discovery
 import com.lit.kcustomercore.extension.*
 import com.lit.kcustomercore.ui.holder.*
+import com.lit.kcustomercore.ui.newdetail.NewDetailActivity
 import com.lit.kcustomercore.view.GridListItemDecoration
 import com.lit.krecyclerview.BaseViewHolder
 import com.zhpan.bannerview.BaseBannerAdapter
@@ -87,6 +88,13 @@ class DiscoveryAdapter(val fragment: DiscoveryFragment, val dataList: List<Disco
                     setOnClickListener {
                         item.data.content.data.run {
                             //todo 跳转动作
+                            if (ad || author == null){
+                                NewDetailActivity.start(fragment.activity, id)
+                            } else {
+                                NewDetailActivity.start(
+                                    fragment.activity, NewDetailActivity.VideoInfo(id, playUrl, title, description, category, library, consumption, cover, author, webUrl)
+                                )
+                            }
                         }
                     }
                     }

@@ -128,6 +128,12 @@ class UgcSelectedCardCollectionViewHolder(view: View) : BaseViewHolder(view) {
 
 }
 
+class CustomeHeaderViewHolder(view: View) : BaseViewHolder(view){
+
+}
+
+class ReplyViewHolder(view: View) : BaseViewHolder(view){}
+
 /**
  * RecyclerView帮助类，获取通用ViewHolder或ItemViewType。
  */
@@ -169,7 +175,7 @@ object RecyclerViewHelp {
 
         UGC_SELECTED_CARD_COLLECTION -> UgcSelectedCardCollectionViewHolder(R.layout.item_ugc_selected_card_collection_type.inflate(parent))
 
-        //AUTO_PLAY_VIDEO_AD -> AutoPlayVideoAdViewHolder(R.layout.item_auto_play_video_ad.inflate(parent))
+        AUTO_PLAY_VIDEO_AD -> AutoPlayVideoAdViewHolder(R.layout.item_auto_play_video_ad.inflate(parent))
 
         else -> EmptyViewHolder(View(parent.context))
     }

@@ -12,6 +12,7 @@ import com.lit.base.mvvm.fragment.BaseFragment
 import com.lit.base.mvvm.fragment.BaseLazyFragment
 import com.lit.kcustomercore.R
 import com.lit.kcustomercore.TestFragment
+import com.lit.kcustomercore.ui.home.commend.CommendFragment
 import com.lit.kcustomercore.ui.home.discovery.DiscoveryFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.viewPager
@@ -39,7 +40,7 @@ class HomePageFragment : BaseFragment(){
         val viewPager = view.findViewById<ViewPager>(R.id.viewPager)
 
         fragments.add(DiscoveryFragment.newInstance())
-        fragments.add(TestFragment.newInstance())
+        fragments.add(CommendFragment.newInstance())
 
         pageAdapter = CommonPageAdapter(childFragmentManager, fragments, tabTitles)
 

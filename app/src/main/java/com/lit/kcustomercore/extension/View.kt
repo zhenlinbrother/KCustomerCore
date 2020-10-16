@@ -34,3 +34,12 @@ fun setOnClickListener(vararg  v: View?, block: View.() -> Unit){
     val listener = View.OnClickListener { it.block() }
     v.forEach { it?.setOnClickListener(listener) }
 }
+
+/**
+ * 批量设置控件点击事件
+ * @param v Array<out View?>
+ * @param listener OnClickListener
+ */
+fun setOnClickListener(vararg  v: View?, listener: View.OnClickListener) {
+    v.forEach { it?.setOnClickListener(listener) }
+}

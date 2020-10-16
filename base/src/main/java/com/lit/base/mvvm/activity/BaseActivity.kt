@@ -48,6 +48,7 @@ abstract class BaseActivity : AppCompatActivity(){
         activityWR = WeakReference(activity!!)
         ActivityCollector.pushTask(activityWR)
         setStatusBarBackground(R.color.common_white)
+        initView()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -104,4 +105,6 @@ abstract class BaseActivity : AppCompatActivity(){
             .fitsSystemWindows(true)
             .init()
     }
+
+    open fun initView(){}
 }

@@ -1,11 +1,12 @@
 package com.lit.kcustomercore.net.api
 
 import com.eyepetizer.android.logic.model.Daily
-import com.lit.kcustomercore.bean.Discovery
-import com.lit.kcustomercore.bean.HomePageRecommend
+import com.lit.kcustomercore.bean.*
 import com.lit.kcustomercore.net.ServiceCreator
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 /**
@@ -36,6 +37,24 @@ interface ApiService {
     @GET
     fun getDaily(@Url url: String): Call<Daily>
 
+    /**
+     * 视频详情-视频信息
+     */
+    @GET("api/v2/video/{id}")
+    fun getVideoBeanForClient(@Path("id") videoId: Long): Call<VideoBeanForClient>
+
+    /**
+     * 视频详情-推荐列表
+     */
+    @GET("api/v4/video/related")
+    fun getVideoRelated(@Query("id") videoId: Long): Call<VideoRelated>
+
+    /**
+     * 视频详情-评论列表
+     */
+    @GET
+    fun getVideoReplies(@Url url: String): Call<VideoReplies>
+
     companion object {
         /**
          * 首页-发现列表
@@ -51,5 +70,10 @@ interface ApiService {
          * 首页-日报列表
          */
         const val DAILY_URL = "${ServiceCreator.BASE_URL}api/v5/index/tab/feed"
+
+        /**
+         * 视频详情-评论列表URL
+         */
+        const val VIDEO_REPLIES_URL = "${ServiceCreator.BASE_URL}api/v2/replies/video?videoId="
     }
 }

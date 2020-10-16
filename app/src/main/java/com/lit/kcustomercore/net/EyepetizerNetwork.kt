@@ -24,6 +24,12 @@ class EyepetizerNetwork{
 
     suspend fun fetchHomePageRecommend(url: String) = apiService.getHomePageRecommend(url).await()
 
+    suspend fun fetchVideoReplies(url: String) = apiService.getVideoReplies(url).await()
+
+    suspend fun fetchVideoBeanForClient(videoId: Long) = apiService.getVideoBeanForClient(videoId).await()
+
+    suspend fun fetchVideoRelated(videoId: Long) = apiService.getVideoRelated(videoId).await()
+
     private suspend fun <T> Call<T>.await(): T{
         return suspendCoroutine {
             enqueue(object : Callback<T> {

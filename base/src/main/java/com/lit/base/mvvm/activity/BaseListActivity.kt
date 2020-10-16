@@ -41,6 +41,8 @@ abstract class BaseListActivity : BaseActivity(), IStateListener {
         super.onCreate(savedInstanceState)
         kRecyclerView = findViewById(R.id.base_recycle_view)
         initRecyclerView(kRecyclerView)
+        initIntent()
+        initData()
         setAdapter(getAdapter())
         baseAdapter.onLoading()
         getFirstData()
@@ -139,4 +141,8 @@ abstract class BaseListActivity : BaseActivity(), IStateListener {
     override fun onEmpty() {
         getFirstData()
     }
+
+    open fun initData(){}
+
+    open fun initIntent(){}
 }
