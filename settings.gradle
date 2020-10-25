@@ -1,3 +1,4 @@
+include ':download'
 include ':video'
 include ':base'
 rootProject.name='KCustomerCore'
