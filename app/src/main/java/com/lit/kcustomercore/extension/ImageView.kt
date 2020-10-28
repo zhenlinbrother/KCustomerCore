@@ -2,6 +2,8 @@ package com.lit.kcustomercore.extension
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.lit.kcustomercore.R
 import de.hdodenhof.circleimageview.CircleImageView
@@ -24,6 +26,16 @@ fun ImageView.load(url: String, round: Float = 0f, cornerType: RoundedCornersTra
 
         Glide.with(this.context).load(url).apply(option).into(this)
     }
+}
+
+fun ImageView.loadCircle(url: String, round: Float = 0f, cornerType: RoundedCornersTransformation.CornerType = RoundedCornersTransformation.CornerType.ALL) {
+
+    val option = RequestOptions
+        .bitmapTransform(CircleCrop())
+        .placeholder(R.drawable.shape_album_loading_bg)
+
+    Glide.with(this.context).load(url).apply(option).into(this)
+
 }
 
 fun CircleImageView.load(url: String, round: Float = 0f, cornerType: RoundedCornersTransformation.CornerType = RoundedCornersTransformation.CornerType.ALL) {

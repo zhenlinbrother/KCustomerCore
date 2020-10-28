@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
             .build()
 
         adapter = PageAdapter(supportFragmentManager, fragmentList)
-        viewPager.offscreenPageLimit = 1
+        viewPager.offscreenPageLimit = fragmentList.size
         viewPager.adapter = adapter
 
         bottomView.setupWithViewPager(viewPager)

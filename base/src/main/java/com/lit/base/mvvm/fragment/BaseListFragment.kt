@@ -47,6 +47,10 @@ abstract class BaseListFragment<T> : BaseLazyFragment(), IStateListener{
         getFirstData()
     }
 
+    override fun onFragmentResume() {
+        super.onFragmentResume()
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.base_recycler_view
     }

@@ -13,6 +13,7 @@ import com.lit.base.mvvm.fragment.BaseLazyFragment
 import com.lit.kcustomercore.R
 import com.lit.kcustomercore.TestFragment
 import com.lit.kcustomercore.ui.home.commend.CommendFragment
+import com.lit.kcustomercore.ui.home.daily.DailyFragment
 import com.lit.kcustomercore.ui.home.discovery.DiscoveryFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.viewPager
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.layout_main_page_title_bar.*
  */
 class HomePageFragment : BaseFragment(){
 
-    val tabTitles = arrayOf("发现", "推荐")
+    val tabTitles = arrayOf("发现", "推荐", "日常")
     lateinit var pageAdapter: CommonPageAdapter
     private var fragments : MutableList<BaseFragment> = ArrayList<BaseFragment>()
 
@@ -41,12 +42,14 @@ class HomePageFragment : BaseFragment(){
 
         fragments.add(DiscoveryFragment.newInstance())
         fragments.add(CommendFragment.newInstance())
+        fragments.add(DailyFragment.newInstance())
 
         pageAdapter = CommonPageAdapter(childFragmentManager, fragments, tabTitles)
 
-        viewPager.offscreenPageLimit = 1
+        viewPager.offscreenPageLimit = 3
         viewPager.adapter = pageAdapter
         viewPager.currentItem = 0
+        viewPager.currentItem = 1
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : BaseOnTabSelectedListener<TabLayout.Tab> {
             override fun onTabReselected(p0: TabLayout.Tab?) {

@@ -21,8 +21,24 @@ class MainPageRepository private constructor(private val eyepetizerNetwork: Eyep
         response
     }
 
+
+    /**
+     * 获取推荐页面数据
+     * @param url String
+     * @return HomePageRecommend
+     */
     suspend fun refreshHomePageRecommend(url: String) = withContext(Dispatchers.IO){
         val response = eyepetizerNetwork.fetchHomePageRecommend(url)
+        response
+    }
+
+    /**
+     * 获取日报页面数据
+     * @param url String
+     * @return Daily
+     */
+    suspend fun refreshDaily(url: String) = withContext(Dispatchers.IO) {
+        val response = eyepetizerNetwork.fetchDaily(url)
         response
     }
 

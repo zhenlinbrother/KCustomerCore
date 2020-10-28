@@ -30,6 +30,8 @@ class EyepetizerNetwork{
 
     suspend fun fetchVideoRelated(videoId: Long) = apiService.getVideoRelated(videoId).await()
 
+    suspend fun fetchDaily(url: String) = apiService.getDaily(url).await()
+
     private suspend fun <T> Call<T>.await(): T{
         return suspendCoroutine {
             enqueue(object : Callback<T> {
