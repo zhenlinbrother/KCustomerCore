@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_new_detail_reply_type.view.*
 import kotlinx.android.synthetic.main.item_text_card_type_header_four.view.*
 
 class NewDetailReplyAdapter(val activity: NewDetailActivity, val dataList: List<VideoReplies.Item>)
-    : RecyclerView.Adapter<BaseViewHolder>(){
+    :    RecyclerView.Adapter<BaseViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType) {
         Constant.ItemViewType.MAX -> ReplyViewHolder(R.layout.item_new_detail_reply_type.inflate(parent))

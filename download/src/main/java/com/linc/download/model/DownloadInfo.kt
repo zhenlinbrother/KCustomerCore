@@ -1,5 +1,6 @@
 package com.linc.download.model
 
+import com.abc.lib_log.JLogUtils
 import com.linc.download.constant.DownloadConstant
 import com.linc.download.db.DownloadDB
 import com.linc.download.listener.DownloadListener
@@ -166,7 +167,28 @@ class DownloadInfo : BaseModel() {
     fun removeCurStatus(type: Int) {
         curState = curState and  type.inv()
     }
+
+    fun log(log: JLogUtils) {
+        log.title("DownloadInfo")
+            .param("id = $id")
+            .param("url = $url")
+            .param("fileName = $fileName")
+            .param("createTime = $createTime")
+            .param("status = ${Status.getStatus(status)} 【$status】")
+            .param("totalSize = $totalSize")
+            .param("type = $type")
+            .param("mimeType = $mimeType")
+            .param("etag = $etag")
+            .param("tmpFileName = $tmpFileName")
+            .param("realFileName = $realFileName")
+            .param("errorMsg = $errorMsg")
+            .param("tip = $tip")
+            .param("curStatus = $curState")
+            .param("listener = $listener")
+            .param("percent = $percent")
+    }
 }
+
 
 
 

@@ -20,9 +20,9 @@ import okhttp3.Response
  * @since [产品/模块版本]
  */
 abstract class BaseStrategy(
-    private val mDownloadInfo: DownloadInfo,
-    private val mStrategyName: String,
-    private val mLog: JLogUtils
+    val mDownloadInfo: DownloadInfo,
+    val mStrategyName: String,
+    val mLog: JLogUtils
 ) : IStrategy{
 
     private val mHandler = Handler(Looper.getMainLooper())
