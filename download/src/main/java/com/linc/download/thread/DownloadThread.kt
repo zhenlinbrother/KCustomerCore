@@ -11,7 +11,9 @@ import com.linc.download.model.DownloadInfo
 import com.linc.download.strategy.ContinueStrategy
 import com.linc.download.strategy.FirstStrategy
 import com.linc.download.strategy.IStrategy
+import com.linc.download.utils.CloseUtils
 import com.linc.download.utils.CloseUtils.close
+import com.linc.download.utils.DownloadFileUtils
 import com.linc.download.utils.DownloadFileUtils.calculatePercent
 import com.linc.download.utils.DownloadFileUtils.getFile
 import com.linc.download.utils.DownloadFileUtils.getFolder
@@ -69,6 +71,13 @@ class DownloadThread(
         mDownloadInfo.log(mLog)
 
         if (!isRunning) {
+            stopSelf("线程停止【1】")
+            return
+        }
+
+        // 存储文件夹没创建成功
+        val createFile = DownloadFileUtils.getFolder()
+        if (createFile == null) {
 
         }
     }
@@ -121,6 +130,11 @@ class DownloadThread(
                 return@post
             }
         }
+    }
+
+    private fun tip(msg: String, log: String) {
+        CloseUtils.close(mResponse)
+
     }
 
     companion object {

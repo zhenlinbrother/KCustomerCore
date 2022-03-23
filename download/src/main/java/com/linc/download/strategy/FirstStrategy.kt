@@ -106,7 +106,8 @@ class FirstStrategy : BaseStrategy {
         var realFileName = tmp + "." + mDownloadInfo.type
 
         var result: File? = null
-        while (true) {
+        var fileExit = true
+        while (fileExit) {
             synchronized(LOCK){
                 val tmpFileExist = DownloadFileUtils.isExist(tmpFileName)
                 val realFileExist = DownloadFileUtils.isExist(realFileName)
@@ -115,7 +116,7 @@ class FirstStrategy : BaseStrategy {
 
                     mDownloadInfo.tmpFileName = tmpFileName
                     mDownloadInfo.realFileName = realFileName
-
+                    fileExit = false
                     return@synchronized
                 }
 

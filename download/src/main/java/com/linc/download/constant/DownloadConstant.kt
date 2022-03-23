@@ -26,6 +26,10 @@ interface DownloadConstant {
          * 临时文件后缀
          */
         const val TMP = ".tmp"
+
+        const val DEFAULT_USER_ID = -1
+
+        const val DEFAULT_DOMAIN = "JerryDownload"
     }
 
 }
