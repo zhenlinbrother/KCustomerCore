@@ -1,5 +1,6 @@
 package com.lit.kcustomercore.net
 
+import com.linc.download.jerry.JerryDownload
 import com.lit.kcustomercore.bean.VideoDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -21,10 +22,12 @@ class VideoRepository(private val network: EyepetizerNetwork) {
             val deferredVideoRelated = async { network.fetchVideoRelated(videoId) }
             val deferredVideoReplies = async { network.fetchVideoReplies(repliesUrl) }
             val deferredVideoBeanForClient = async { network.fetchVideoBeanForClient(videoId) }
+            val downloadInfoClient = async { JerryDownload.instance?.getDownloadInfo(videoId) }
             val videoBeanForClient = deferredVideoBeanForClient.await()
             val videoRelated = deferredVideoRelated.await()
             val videoReplies = deferredVideoReplies.await()
-            val videoDetail = VideoDetail(videoBeanForClient, videoRelated, videoReplies)
+            val downloadInfo = downloadInfoClient.await()
+            val videoDetail = VideoDetail(videoBeanForClient, videoRelated, videoReplies, downloadInfo)
 
             videoDetail
         }
@@ -34,9 +37,11 @@ class VideoRepository(private val network: EyepetizerNetwork) {
         coroutineScope {
             val deferredVideoRelated = async { network.fetchVideoRelated(videoId) }
             val deferredVideoReplies = async { network.fetchVideoReplies(repliesUrl) }
+            val downloadInfoClient = async { JerryDownload.instance?.getDownloadInfo(videoId) }
             val videoRelated = deferredVideoRelated.await()
             val videoReplies = deferredVideoReplies.await()
-            val videoDetail = VideoDetail(null, videoRelated, videoReplies)
+            val downloadInfo = downloadInfoClient.await()
+            val videoDetail = VideoDetail(null, videoRelated, videoReplies, downloadInfo)
             videoDetail
         }
     }

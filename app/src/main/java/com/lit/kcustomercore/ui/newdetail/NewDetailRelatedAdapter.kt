@@ -2,8 +2,14 @@ package com.lit.kcustomercore.ui.newdetail
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.linc.download.constant.DownloadConstant
+import com.linc.download.jerry.JerryDownload
+import com.linc.download.listener.DownloadListener
+import com.linc.download.model.CurStatus
+import com.linc.download.model.DownloadInfo
 import com.lit.kcustomercore.Constant
 import com.lit.kcustomercore.R
 import com.lit.kcustomercore.bean.VideoRelated
@@ -21,11 +27,18 @@ import kotlinx.android.synthetic.main.item_new_detail_custom_header_type.view.iv
 import kotlinx.android.synthetic.main.item_new_detail_custom_header_type.view.tvDescription
 import kotlinx.android.synthetic.main.item_new_detail_custom_header_type.view.tvTitle
 import kotlinx.android.synthetic.main.item_text_card_type_header_four.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 
 class NewDetailRelatedAdapter(private val activity: NewDetailActivity,
                               val dataList: List<VideoRelated.Item>,
                               private var videoInfoData: NewDetailActivity.VideoInfo?)
     : RecyclerView.Adapter<BaseViewHolder>() {
+
+    private var mDownloadInfo: DownloadInfo? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType){
         Constant.ItemViewType.CUSTOM_HEADER -> CustomeHeaderViewHolder(R.layout.item_new_detail_custom_header_type.inflate(parent))
         Constant.ItemViewType.MAX -> SimpleHotReplyCardViewHolder(View(parent.context))
@@ -54,9 +67,44 @@ class NewDetailRelatedAdapter(private val activity: NewDetailActivity,
                         }
                         setOnClickListener(itemView.ivCollectionCount, itemView.tvCollectionCount, itemView.ivShare, itemView.tvShareCount, itemView.ivCache, itemView.tvCache, itemView.ivFavorites, itemView.tvFavorites, itemView.tvFollow){
                             when(this){
+                                tvCache, ivCache -> {
+                                    val downloadInfo = JerryDownload.instance!!.download(
+                                        videoInfoData!!.videoId,
+                                        videoInfoData!!.playUrl,
+                                        videoInfoData!!.title,
+                                        DownloadConstant.DEFAULT_USER_ID,
+                                        DownloadConstant.DEFAULT_DOMAIN,
+                                        videoInfoData!!.cover.blurred
+                                    )
+
+                                    mDownloadInfo = downloadInfo
+
+                                    setDownloadListener(itemView.tvCache)
+                                }
                                 else -> "该功能即将开放，敬请期待".showToast()
                             }
                         }
+
+
+                        if (mDownloadInfo != null) {
+                            if (mDownloadInfo!!.isCurStatusContains(CurStatus.ERROR)
+                                || mDownloadInfo!!.isCurStatusContains(CurStatus.TIP)
+                                || mDownloadInfo!!.isCurStatusContains(CurStatus.PAUSE)) {
+                                itemView.tvCache.text = "缓存"
+                                return
+                            }
+
+                            if (mDownloadInfo!!.isCurStatusContains(CurStatus.FINISH)) {
+                                itemView.tvCache.text = "已缓存"
+                                return
+                            }
+
+                            if (mDownloadInfo!!.isCurStatusContains(CurStatus.DOWNLOADING)) {
+                                itemView.tvCache.text = "${mDownloadInfo!!.percent}%"
+                                return
+                            }
+                        }
+
                     }
                 }
             }
@@ -104,4 +152,44 @@ class NewDetailRelatedAdapter(private val activity: NewDetailActivity,
         this.videoInfoData = videoInfoData
     }
 
+    fun bindDownloadInfo(downloadInfo: DownloadInfo?) {
+        this.mDownloadInfo = downloadInfo
+    }
+
+    private fun setDownloadListener(view: TextView) {
+        mDownloadInfo?.listener = object : DownloadListener {
+            override fun onPause() {
+                view.text = "继续"
+            }
+
+            override fun onWaiting() {
+
+            }
+
+            override fun onInit() {
+
+            }
+
+            override fun onDownloading() {
+                view.text = "${mDownloadInfo?.percent}%"
+            }
+
+            override fun onTip() {
+                view.text = "缓存"
+            }
+
+            override fun onError() {
+                view.text = "缓存"
+            }
+
+            override fun onFinish() {
+                view.text = "已缓存"
+            }
+
+            override fun onProgress() {
+                view.text = "${mDownloadInfo?.percent}%"
+            }
+
+        }
+    }
 }

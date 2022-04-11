@@ -16,6 +16,8 @@
 
 package com.lit.kcustomercore.bean
 
+import com.linc.download.model.DownloadInfo
+
 /**
  *
  * 视频详情-相关推荐+评论，响应实体类。
@@ -23,7 +25,7 @@ package com.lit.kcustomercore.bean
  * @author vipyinzhiwei
  * @since  2020/5/16
  */
-data class VideoDetail(val videoBeanForClient: VideoBeanForClient?, val videoRelated: VideoRelated?, val videoReplies: VideoReplies)
+data class VideoDetail(val videoBeanForClient: VideoBeanForClient?, val videoRelated: VideoRelated?, val videoReplies: VideoReplies, val downloadInfo: DownloadInfo?)
 
 
 /**

@@ -1,5 +1,8 @@
 package com.lit.kcustomercore
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +31,12 @@ class MainActivity : BaseActivity() {
     private var fragmentList = listOf<BaseFragment>(HomePageFragment.newInstance())
     private lateinit var adapter: PageAdapter
 
+    private val REQUEST_EXTERNAL_STORAGE = 1
+    private val PERMISSION = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
@@ -51,7 +60,7 @@ class MainActivity : BaseActivity() {
         viewPager.adapter = adapter
 
         bottomView.setupWithViewPager(viewPager)
-
+        checkAllPermission()
     }
 
     companion object{
@@ -76,6 +85,26 @@ class MainActivity : BaseActivity() {
 
         override fun getCount(): Int {
             return fragments.size
+        }
+    }
+
+    private val REQUEST_CODE = 0
+    private val NO_PERMISSION = arrayListOf<String>()
+    private fun checkAllPermission() {
+        NO_PERMISSION.clear()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PERMISSION.forEach {
+                if (checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED) {
+                    NO_PERMISSION.add(it)
+                }
+            }
+
+            if (NO_PERMISSION.size != 0) {
+                requestPermissions(
+                    NO_PERMISSION.toTypedArray(),
+                    REQUEST_CODE
+                )
+            }
         }
     }
 }

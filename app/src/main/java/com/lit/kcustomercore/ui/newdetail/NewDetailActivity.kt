@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
+import com.linc.download.model.DownloadInfo
 import com.linc.video.helper.VideoPlayerHelper
 import com.lit.base.mvvm.activity.BaseActivity
 import com.lit.kcustomercore.R
@@ -37,6 +38,7 @@ class NewDetailActivity : BaseActivity() {
     private lateinit var relatedAdapter: NewDetailRelatedAdapter
     private lateinit var replyAdapter: NewDetailReplyAdapter
     private var orientationUtils: OrientationUtils? = null
+    private var downloadInfo: DownloadInfo? = null
 
     private val globalJob by lazy { Job() }
     private var hideTitleBarJob: Job? = null
@@ -94,6 +96,7 @@ class NewDetailActivity : BaseActivity() {
         //刷新，视频信息+相关推荐+评论
         if (!viewModel.videoDetailLiveData.hasObservers()){
             viewModel.videoDetailLiveData.observe(this, Observer {
+
                 val response = it.getOrNull()
                 if (response == null){
                     ResponseHandler.getFailureTips(it.exceptionOrNull()).showToast()
@@ -114,6 +117,7 @@ class NewDetailActivity : BaseActivity() {
                 viewModel.repliesDataList.clear()
                 viewModel.relatedDataList.addAll(response.videoRelated.itemList)
                 viewModel.repliesDataList.addAll(response.videoReplies.itemList)
+                relatedAdapter.bindDownloadInfo(response.downloadInfo)
                 relatedAdapter.notifyDataSetChanged()
                 replyAdapter.notifyDataSetChanged()
                 when {
@@ -140,6 +144,7 @@ class NewDetailActivity : BaseActivity() {
                 viewModel.relatedDataList.addAll(response.videoRelated.itemList)
                 viewModel.repliesDataList.addAll(response.videoReplies.itemList)
                 relatedAdapter.bindVideoInfo(viewModel.videoInfoData)
+                relatedAdapter.bindDownloadInfo(response.downloadInfo)
                 relatedAdapter.notifyDataSetChanged()
                 replyAdapter.notifyDataSetChanged()
                 when {

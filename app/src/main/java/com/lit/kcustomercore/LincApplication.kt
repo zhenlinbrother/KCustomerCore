@@ -3,6 +3,9 @@ package com.lit.kcustomercore
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.linc.download.jerry.JerryDownload
+import com.linc.download.jerry.JerryDownloadConfig
+//import com.linc.download.manager.DatabaseManager
 
 /**
  * author       : linc
@@ -15,6 +18,12 @@ class LincApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
+
+        JerryDownloadConfig.setThreadCount(3)
+        JerryDownloadConfig.setDownloadFolder("linc/download")
+        JerryDownloadConfig.init(this)
+
+//        DatabaseManager.saveApplication(this)
     }
 
     override fun attachBaseContext(base: Context?) {
