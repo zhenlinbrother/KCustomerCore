@@ -16,19 +16,19 @@ object DownloadFileUtils {
      * 获取文件夹
      * @return File
      */
-    fun getFolder() : File {
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED){
-            return createSaveFolder(Environment.getExternalStorageDirectory().absolutePath)
+    fun getFolder() : File? {
+        return if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED){
+            createSaveFolder(Environment.getExternalStorageDirectory().absolutePath)
         } else {
-            return createSaveFolder(Environment.getDataDirectory().absolutePath)
+            createSaveFolder(Environment.getDataDirectory().absolutePath)
         }
     }
 
-    private fun createSaveFolder(url: String) : File {
+    private fun createSaveFolder(url: String) : File? {
         return FileUtils.createFolder(
             File(url),
             DownloadConfig.instance?.downloadFile
-        )!!
+        )
     }
 
     /**

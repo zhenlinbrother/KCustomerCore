@@ -20,7 +20,7 @@ interface DownloadConstant {
         /**
          * 默认的总长度
          */
-        const val DEFALUT_TOTAL_SIZE = -1
+        const val DEFALUT_TOTAL_SIZE = -1L
 
         /**
          * 临时文件后缀

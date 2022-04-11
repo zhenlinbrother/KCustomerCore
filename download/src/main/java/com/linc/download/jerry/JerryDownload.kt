@@ -7,15 +7,27 @@ import android.util.Log
 import com.abc.lib_log.JLogUtils
 import com.linc.download.config.DownloadConfig
 import com.linc.download.constant.DownloadConstant
+//import com.linc.download.manager.DatabaseManager
 import com.linc.download.model.CurStatus
 import com.linc.download.model.DownloadInfo
 import com.linc.download.model.DownloadInfo_Table
+//import com.linc.download.model.DownloadInfo_Table
 import com.linc.download.model.Status
 import com.linc.download.thread.DownloadThread
 import com.linc.download.utils.DownloadFileUtils
 import com.linc.download.utils.EncryptionUtils
 import com.raizlabs.android.dbflow.sql.language.OrderBy
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.raizlabs.android.dbflow.sql.language.Where
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+//import com.raizlabs.android.dbflow.sql.language.OrderBy
+//import com.raizlabs.android.dbflow.sql.language.SQLite
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -23,7 +35,7 @@ import kotlin.collections.HashMap
 
 class JerryDownload : IJerryDownload{
 
-    private lateinit var mDownload: Download
+    private var mDownload: Download = Download()
 
     companion object {
         private const val TAG = "JerryDownload"
@@ -40,6 +52,7 @@ class JerryDownload : IJerryDownload{
             }
     }
     override fun download(
+        videoId: Long,
         url: String,
         fileName: String,
         userId: Int,
@@ -56,11 +69,12 @@ class JerryDownload : IJerryDownload{
         downloadInfo.createTime = System.currentTimeMillis()
         downloadInfo.status = Status.INIT
         downloadInfo.cover = cover
+        downloadInfo.videoId = videoId
         return download(downloadInfo)
     }
 
-    override fun download(url: String, fileName: String): DownloadInfo {
-        return download(url, fileName,
+    override fun download(videoId: Long, url: String, fileName: String): DownloadInfo {
+        return download(videoId, url, fileName,
             DownloadConstant.DEFAULT_USER_ID,
             DownloadConstant.DEFAULT_DOMAIN,
             "")
@@ -86,6 +100,7 @@ class JerryDownload : IJerryDownload{
                 .from(DownloadInfo::class.java)
                 .orderBy(orderBy)
                 .queryList()
+//            val downloadInfos = DatabaseManager.db.downloadDao.getDownloadInfo()
 
             //按照 status 填充 运行时curStatus 的值
             for (i in 0 .. downloadInfos.size) {
@@ -143,12 +158,45 @@ class JerryDownload : IJerryDownload{
         }
     }
 
+    override fun getDownloadInfo(videoId: Long) : DownloadInfo?{
+        synchronized(mDownload.LOCK) {
+            val downloadInfo = SQLite.select()
+                .from(DownloadInfo::class.java)
+                .where(DownloadInfo_Table.videoId.eq(videoId))
+                .querySingle()
+
+            //错误状态
+            if (downloadInfo?.isStatusContains(Status.ERROR) == true) {
+                downloadInfo.curState = CurStatus.ERROR
+            }
+
+            //完成的状态
+            if (downloadInfo?.isStatusContains(Status.FINISH) == true) {
+                downloadInfo.curState = CurStatus.FINISH
+            }
+
+            // 获取 本地临时文件的信息，并设置其进度
+            var tmpFileName = downloadInfo?.tmpFileName
+            if (!tmpFileName.isNullOrEmpty()) {
+                val tempFile = DownloadFileUtils.getFile(tmpFileName)
+
+                //临时文件存在，则计算其进度
+                if (tempFile?.exists() == true) {
+                    val percent = DownloadFileUtils.calculatePercent(tempFile.length(), downloadInfo!!.totalSize)
+                    downloadInfo.percent = percent
+                }
+            }
+
+            return downloadInfo
+        }
+    }
+
     override fun removeDownloadInfo(downloadInfo: DownloadInfo) {
-        TODO("Not yet implemented")
+        mDownload.removeThread(downloadInfo)
     }
 
     override fun delete(downloadInfo: DownloadInfo) {
-        TODO("Not yet implemented")
+        mDownload.delete(downloadInfo)
     }
 
     private fun obtainRandomName(url: String) : String =
@@ -177,7 +225,7 @@ class JerryDownload : IJerryDownload{
                             if (thread!!.isRunning) {
                                 downloadInfo.log(log)
                                 log.showError()
-                                return null
+                                return@forEach
                             } else {
                                 mDownloadInfoMap.remove(it)
                                 log.content("移除对应的线程")
@@ -205,6 +253,7 @@ class JerryDownload : IJerryDownload{
 
                 if (downloadInfo.id <= 0) {
                     val save = downloadInfo.save()
+//                    val save = DatabaseManager.db.downloadDao.save(downloadInfo)
 
                     log.content("插入数据库结果：$save")
 
@@ -212,6 +261,10 @@ class JerryDownload : IJerryDownload{
                         log.showError()
                         return null
                     }
+//                    if (save == 0L) {
+//                        log.showError()
+//                        return null
+//                    }
 
                     downloadInfo.log(log)
                 }
@@ -223,6 +276,7 @@ class JerryDownload : IJerryDownload{
                 if (downloadInfo.isStatusContains(Status.TIP)) {
                     downloadInfo.removeStatus(Status.TIP)
                     downloadInfo.update()
+//                    DatabaseManager.getDownloadDao().update(downloadInfo)
                 }
 
                 val taskId = mRandom.nextInt(BOUND)
@@ -244,6 +298,9 @@ class JerryDownload : IJerryDownload{
 
                 return downloadInfo
             }
+//            val downloadInfoFlow = flow<DownloadInfo?> {
+//                emit(downloadInfo)
+//            }
 
         }
 
@@ -310,6 +367,7 @@ class JerryDownload : IJerryDownload{
 
             //删除数据库
             downloadInfo.delete()
+//            DatabaseManager.getDownloadDao().delete(downloadInfo)
         }
 
     }

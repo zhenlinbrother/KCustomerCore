@@ -1,6 +1,8 @@
 package com.linc.download.db
 
-import com.raizlabs.android.dbflow.annotation.Database
+import androidx.room.Database
+//import androidx.room.RoomDatabase
+//import com.linc.download.model.DownloadInfo
 
 
 /**
@@ -9,7 +11,7 @@ import com.raizlabs.android.dbflow.annotation.Database
  * desc         : 数据库基本配置
  * version      : 1.0.0
  */
-@Database(version = DownloadDB.VERSION)
+@com.raizlabs.android.dbflow.annotation.Database(version = DownloadDB.VERSION)
 class DownloadDB {
     companion object {
         const val VERSION = 1
@@ -17,3 +19,10 @@ class DownloadDB {
         const val NAME = "JerryDownload"
     }
 }
+//@Database(version = 1, exportSchema = false, entities = [DownloadInfo::class])
+//abstract class DownloadDB : RoomDatabase() {
+//
+//    val downloadDao: DownloadDao by lazy { createDownloadDao() }
+//
+//    abstract fun createDownloadDao(): DownloadDao
+//}

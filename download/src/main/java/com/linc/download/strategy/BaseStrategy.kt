@@ -3,6 +3,7 @@ package com.linc.download.strategy
 import android.os.Handler
 import android.os.Looper
 import com.abc.lib_log.JLogUtils
+//import com.linc.download.manager.DatabaseManager
 import com.linc.download.model.CurStatus
 import com.linc.download.model.DownloadInfo
 import com.linc.download.model.Status
@@ -41,10 +42,11 @@ abstract class BaseStrategy(
             return
         }
 
-        mDownloadInfo.errorMsg = errorMsg
+        mDownloadInfo.errorMsg = errorMsg!!
         mDownloadInfo.curState = CurStatus.ERROR
         mDownloadInfo.status = Status.ERROR
         mDownloadInfo.update()
+//        DatabaseManager.getDownloadDao().update(mDownloadInfo)
 
         CloseUtils.close(mResponse)
     }
@@ -60,10 +62,11 @@ abstract class BaseStrategy(
             return
         }
 
-        mDownloadInfo.tip = tipMsg
+        mDownloadInfo.tip = tipMsg!!
         mDownloadInfo.addCurStatus(CurStatus.TIP)
         mDownloadInfo.addStatus(Status.TIP)
         mDownloadInfo.update()
+//        DatabaseManager.getDownloadDao().update(mDownloadInfo)
 
         CloseUtils.close(mResponse)
     }

@@ -9,15 +9,17 @@ import com.linc.download.model.DownloadInfo
  */
 interface IJerryDownload {
 
-    fun download(url: String, fileName: String, userId: Int, domain: String, cover: String) : DownloadInfo
+    fun download(videoId: Long, url: String, fileName: String, userId: Int, domain: String, cover: String) : DownloadInfo
 
-    fun download(url: String, fileName: String) : DownloadInfo
+    fun download(videoId: Long, url: String, fileName: String) : DownloadInfo
 
     fun download(downloadInfo: DownloadInfo) : DownloadInfo
 
     fun stopTask(downloadInfo: DownloadInfo)
 
     fun getDownloadInfo(userId: Int, domain: String) : List<DownloadInfo>
+
+    fun getDownloadInfo(videoId: Long) : DownloadInfo?
 
     fun removeDownloadInfo(downloadInfo: DownloadInfo)
 

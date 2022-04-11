@@ -3,6 +3,7 @@ package com.linc.download.strategy
 import com.abc.lib_log.JLogUtils
 import com.linc.download.constant.DownloadConstant
 import com.linc.download.constant.RespHead
+//import com.linc.download.manager.DatabaseManager
 import com.linc.download.model.DownloadInfo
 import com.linc.download.model.Status
 import com.linc.download.utils.CloseUtils
@@ -21,7 +22,7 @@ import java.net.UnknownHostException
 class FirstStrategy : BaseStrategy {
 
 
-    constructor(mDownloadInfo: DownloadInfo, mStrategyName: String, mLog: JLogUtils) : super(
+    constructor(mDownloadInfo: DownloadInfo, mLog: JLogUtils) : super(
         mDownloadInfo,
         "FirstStrategy",
         mLog
@@ -71,7 +72,7 @@ class FirstStrategy : BaseStrategy {
         mDownloadInfo.totalSize = contentLength
         mDownloadInfo.type = mediaType.subtype
         mDownloadInfo.mimeType = mediaType.toString()
-        mDownloadInfo.etag = etag
+        mDownloadInfo.etag = etag!!
 
         val fileName = calculateFileName()
 
@@ -82,6 +83,7 @@ class FirstStrategy : BaseStrategy {
 
         mDownloadInfo.status = Status.DOWNLOAD
         mDownloadInfo.update()
+//        DatabaseManager.getDownloadDao().update(mDownloadInfo)
 
         CloseUtils.close(mResponse)
         return true

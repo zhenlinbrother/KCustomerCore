@@ -35,4 +35,12 @@ object CloseUtils {
             e.printStackTrace()
         }
     }
+
+    fun Closeable.closeable() {
+        try {
+            this.close()
+        } catch (e : Exception) {
+            e.printStackTrace()
+        }
+    }
 }

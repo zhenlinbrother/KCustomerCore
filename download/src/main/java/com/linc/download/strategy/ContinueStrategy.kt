@@ -10,7 +10,7 @@ import java.net.UnknownHostException
 
 class ContinueStrategy : BaseStrategy{
 
-    constructor(mDownloadInfo: DownloadInfo, mStrategyName: String, mLog: JLogUtils) : super(
+    constructor(mDownloadInfo: DownloadInfo, mLog: JLogUtils) : super(
         mDownloadInfo,
         "ContinueStrategy",
         mLog
